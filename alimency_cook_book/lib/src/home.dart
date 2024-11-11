@@ -7,7 +7,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 197, 223, 50),
-      appBar: AppBar(title: const Text("Alimency"), backgroundColor: const Color.fromARGB(255, 24, 24, 24), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white),),
+      appBar: AppBar(
+        title: const Text("Alimency"),
+        backgroundColor: const Color.fromARGB(255, 24, 24, 24),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(color: Colors.white),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -16,6 +21,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //Favourite Food Guides
                 Container(
                     child: Card(
                         child: SizedBox(
@@ -24,6 +30,7 @@ class Home extends StatelessWidget {
                   child: FloatingActionButton(
                       child: Icon(Icons.favorite), onPressed: () {}),
                 ))),
+                //Food Guide Forum
                 Container(
                     child: Card(
                         child: SizedBox(
@@ -37,6 +44,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //Meal Tracker and Expense Tracker
                 Container(
                     child: Card(
                         child: SizedBox(
@@ -45,13 +53,17 @@ class Home extends StatelessWidget {
                   child: FloatingActionButton(
                       child: Icon(Icons.history), onPressed: () {}),
                 ))),
+                //Users Pantry/Fridge
                 Container(
                     child: Card(
                         child: SizedBox(
                   height: 200,
                   width: 200,
                   child: FloatingActionButton(
-                      child: Icon(Icons.food_bank), onPressed: () {}),
+                      child: Icon(Icons.food_bank),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/user_pantry");
+                      }),
                 )))
               ],
             ),
