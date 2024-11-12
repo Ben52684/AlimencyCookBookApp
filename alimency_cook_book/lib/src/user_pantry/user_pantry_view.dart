@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 class UserPantry extends StatefulWidget {
   static const routeName = '/user_pantry';
 
+  const UserPantry({super.key});
+
   @override
   _UserPantryState createState() => _UserPantryState();
 }
@@ -37,12 +39,13 @@ class _UserPantryState extends State<UserPantry> {
                     final ingredient = pantryViewModel.ingredients[index];
                     return InkWell(
                       onTap: () {
-                        ShowItemDetails(context, ingredient, pantryViewModel,
+                        showItemDetails(context, ingredient, pantryViewModel,
                             titleController, quantityController);
                       },
                       child: ListTile(
                         tileColor: Colors.white70,
                         title: Text(ingredient.title),
+                        trailing: Text(ingredient.quantity),
                       ),
                     );
                   },
@@ -69,16 +72,15 @@ class _UserPantryState extends State<UserPantry> {
   }
 }
 
-void ShowItemDetails(
+void showItemDetails(
   BuildContext context,
   IngredientModel ingredient,
   PantryViewModel pantryViewModel,
   TextEditingController quantityController,
   TextEditingController titleController,
 ) {
-  // Initialize the controllers with the ingredient's current values
   titleController.text = ingredient.title;
-  quantityController.text = ingredient.quantity.toString();
+  quantityController.text = ingredient.quantity;
 
   IngredientModel updatedIngredient = IngredientModel(
     id: ingredient.id,
@@ -117,19 +119,15 @@ void ShowItemDetails(
           ),
           TextButton(
             onPressed: () {
-              // Check if the text has changed, and if so, update the ingredient
               String? newTitle = titleController.text;
               String? newQuantity = quantityController.text;
 
-              // Only update if there's a change
               if (newTitle != ingredient.title ||
                   newQuantity != ingredient.quantity) {
                 updatedIngredient = updatedIngredient.copyWith(
                   title: newTitle,
                   quantity: newQuantity,
                 );
-
-                // Save the updated ingredient
                 pantryViewModel.updateIngredient(updatedIngredient);
               }
 
