@@ -26,7 +26,6 @@ class PantryViewModel with ChangeNotifier {
     await Future.delayed(Duration.zero);
     _ingredients?.add(ingredient);
     notifyListeners();
-    print('Saved note');
     print(ingredient.title);
   }
 

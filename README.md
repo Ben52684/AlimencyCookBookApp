@@ -3,10 +3,26 @@ Struggling to find meals with limited ingredients? Alimency helps you save time 
 
 
 
+
+
 Features : 
+  - User Login/Register [Backlog]
   - Dashboard [Completed]
-  - Virtual Pantry [In progress]
-  - Meal Tracker [Backlog]
-  - Favourite Meals [In Progress]
-  - Popular Food Guides uploaded by community [Backlog]
-  - Food Guides generated based on ingredients in Virtual Pantry using Grok [Backlog] 
+    - Virtual Pantry [In progress]
+      > Filter by
+    - Meal Tracker [Backlog]
+      > Timeline
+      > Add Meal
+      > Filter by
+      > Stats Bar
+    - Favourite Meals [In Progress]
+      > List of Favourite meals
+      > Filter by
+    - Popular Food Guides uploaded by community [Backlog]
+      > Filter by
+      > My guides
+        > Add guide
+        > Remove guide
+      > Upvote guides
+    - Food Guides generated based on ingredients in Virtual Pantry using Grok [Backlog] 
+      > Integrate Grok API

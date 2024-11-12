@@ -36,7 +36,7 @@ class _NewIngredientViewState extends State<NewIngredientView> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: "Title",
+                        hintText: "Ingredient",
                       ),
                       controller: titleController,
                     ),
