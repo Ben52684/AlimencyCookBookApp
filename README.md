@@ -25,4 +25,6 @@ Features :
         > Remove guide
       > Upvote guides
     - Food Guides generated based on ingredients in Virtual Pantry using Grok [In Progress] 
-      > Integrate Grok API
+      > Integrate Grok API (Implemented)
+      > Fine tune Grok querying
+
