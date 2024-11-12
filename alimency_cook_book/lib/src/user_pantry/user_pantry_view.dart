@@ -11,6 +11,9 @@ class UserPantry extends StatefulWidget {
 }
 
 class _UserPantryState extends State<UserPantry> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,8 @@ class _UserPantryState extends State<UserPantry> {
                     final ingredient = pantryViewModel.ingredients[index];
                     return InkWell(
                       onTap: () {
-                        ShowItemDetails(context, ingredient);
+                        ShowItemDetails(context, ingredient, pantryViewModel,
+                            titleController, quantityController);
                       },
                       child: ListTile(
                         tileColor: Colors.white70,
@@ -51,7 +55,8 @@ class _UserPantryState extends State<UserPantry> {
                   children: [
                     FloatingActionButton(
                       child: const Icon(Icons.add),
-                      onPressed: () => Navigator.pushNamed(context, '/new_ingredient'),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/new_ingredient'),
                     ),
                   ],
                 ),
@@ -64,26 +69,79 @@ class _UserPantryState extends State<UserPantry> {
   }
 }
 
-void ShowItemDetails(BuildContext context, IngredientModel ingredientModel) {
+void ShowItemDetails(
+  BuildContext context,
+  IngredientModel ingredient,
+  PantryViewModel pantryViewModel,
+  TextEditingController quantityController,
+  TextEditingController titleController,
+) {
+  // Initialize the controllers with the ingredient's current values
+  titleController.text = ingredient.title;
+  quantityController.text = ingredient.quantity.toString();
+
+  IngredientModel updatedIngredient = IngredientModel(
+    id: ingredient.id,
+    title: ingredient.title,
+    quantity: ingredient.quantity,
+  );
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(ingredientModel.title),
+        title: Text(ingredient.title),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Description: ${ingredientModel.title}"),
-            SizedBox(height: 4),
-            Text("Quantity: ${ingredientModel.quantity}"),
+            TextField(
+              controller: titleController,
+              decoration:
+                  InputDecoration(hintText: "Ingredient: ${ingredient.title}"),
+            ),
+            TextField(
+              controller: quantityController,
+              decoration:
+                  InputDecoration(hintText: "Quantity: ${ingredient.quantity}"),
+              keyboardType: TextInputType.number,
+            ),
           ],
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
+              pantryViewModel.deleteIngredient(ingredient.id);
               Navigator.of(context).pop();
             },
-            child: const Text('Okay'),
+            child: const Text('Delete'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Check if the text has changed, and if so, update the ingredient
+              String? newTitle = titleController.text;
+              String? newQuantity = quantityController.text;
+
+              // Only update if there's a change
+              if (newTitle != ingredient.title ||
+                  newQuantity != ingredient.quantity) {
+                updatedIngredient = updatedIngredient.copyWith(
+                  title: newTitle,
+                  quantity: newQuantity,
+                );
+
+                // Save the updated ingredient
+                pantryViewModel.updateIngredient(updatedIngredient);
+              }
+
+              Navigator.of(context).pop();
+            },
+            child: const Text('Save'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
           ),
         ],
       );

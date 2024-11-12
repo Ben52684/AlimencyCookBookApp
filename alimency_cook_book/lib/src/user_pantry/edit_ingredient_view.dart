@@ -5,16 +5,16 @@ import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NewIngredientView extends StatefulWidget {
-  const NewIngredientView({super.key});
+class EditIngredientView extends StatefulWidget {
+  const EditIngredientView({super.key});
 
-  static const routeName = '/new_ingredient';
+  static const routeName = '/edit_ingredient';
 
   @override
-  State<NewIngredientView> createState() => _NewIngredientViewState();
+  State<EditIngredientView> createState() => _EditIngredientViewState();
 }
 
-class _NewIngredientViewState extends State<NewIngredientView> {
+class _EditIngredientViewState extends State<EditIngredientView> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
 
@@ -23,7 +23,7 @@ class _NewIngredientViewState extends State<NewIngredientView> {
     return Consumer<PantryViewModel>(
       builder: (context, pantryViewModel, child) => Scaffold(
         appBar: AppBar(
-          title: const Text("Add Ingredient"),
+          title: const Text("Edit Ingredient"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

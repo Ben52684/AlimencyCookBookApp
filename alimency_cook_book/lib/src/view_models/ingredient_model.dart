@@ -1,8 +1,8 @@
 
 class IngredientModel {
-  final int id;
-  final String title;
-  final String quantity;
+  late final int id;
+  late final String title;
+  late final String quantity;
 
   IngredientModel({
     required this.id,
@@ -26,5 +26,13 @@ class IngredientModel {
       title: json['title'], 
       quantity: json['content']
       );
+  }
+   
+  IngredientModel copyWith({int? id, String? title, String? quantity}) {
+    return IngredientModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      quantity: quantity ?? this.quantity,
+    );
   }
 }
