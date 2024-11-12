@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:alimency_cook_book/src/user_pantry/ingredient_model.dart';
+import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class NewIngredientView extends StatefulWidget {
-  NewIngredientView({super.key});
+  const NewIngredientView({super.key});
 
   static const routeName = '/new_ingredient';
 
@@ -48,10 +48,10 @@ class _NewIngredientViewState extends State<NewIngredientView> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: "Content",
+                        hintText: "Quantity",
                       ),
                       controller: contentController,
-                      maxLines: 5,
+                      maxLines: 1,
                     ),
                   ),
                 ),
@@ -62,7 +62,7 @@ class _NewIngredientViewState extends State<NewIngredientView> {
                       IngredientModel(
                         id: Random().nextInt(1000),
                         title: titleController.text,
-                        content: contentController.text,
+                        quantity: contentController.text,
                       ),
                     );
                     Navigator.pop(context);

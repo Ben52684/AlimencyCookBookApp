@@ -2,12 +2,12 @@
 class IngredientModel {
   final int id;
   final String title;
-  final String content;
+  final String quantity;
 
   IngredientModel({
     required this.id,
     required this.title,
-    required this.content,
+    required this.quantity,
   });
 
   Map <String, dynamic> toJson() {
@@ -15,7 +15,7 @@ class IngredientModel {
 
       'id' : id,
       'title' : title,
-      'content' : content
+      'quantity' : quantity
     };
   }
 
@@ -24,7 +24,7 @@ class IngredientModel {
     return IngredientModel(
       id: json['id'], 
       title: json['title'], 
-      content: json['content']
+      quantity: json['content']
       );
   }
 }

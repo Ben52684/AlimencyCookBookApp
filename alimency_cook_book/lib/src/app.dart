@@ -1,6 +1,6 @@
 import 'package:alimency_cook_book/src/home.dart';
-import 'package:alimency_cook_book/src/user_pantry/dummy_ingredient_repo.dart';
-import 'package:alimency_cook_book/src/user_pantry/ingredient_model.dart';
+import 'package:alimency_cook_book/src/repositories/dummy_ingredient_repo.dart';
+import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/user_pantry/new_ingredient_view.dart';
 import 'package:alimency_cook_book/src/user_pantry/user_pantry_view.dart';
 import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';

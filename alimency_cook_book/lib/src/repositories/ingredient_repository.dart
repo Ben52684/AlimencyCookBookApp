@@ -1,6 +1,6 @@
 
 
-import 'package:alimency_cook_book/src/user_pantry/ingredient_model.dart';
+import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 
 abstract class IngredientRepository {
   Future<List<IngredientModel>> getAllIngredients();

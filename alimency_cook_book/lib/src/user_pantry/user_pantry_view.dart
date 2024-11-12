@@ -1,3 +1,4 @@
+import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,15 +34,10 @@ class _UserPantryState extends State<UserPantry> {
                     final ingredient = pantryViewModel.ingredients[index];
                     return InkWell(
                       onTap: () {
-                        // Handle tap on ingredient (if needed)
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => IngredientDetailScreen(ingredient: ingredient),
-                        //   ),
-                        // );
+                        ShowItemDetails(context, ingredient);
                       },
                       child: ListTile(
+                        tileColor: Colors.white70,
                         title: Text(ingredient.title),
                       ),
                     );
@@ -66,4 +62,31 @@ class _UserPantryState extends State<UserPantry> {
       ),
     );
   }
+}
+
+void ShowItemDetails(BuildContext context, IngredientModel ingredientModel) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(ingredientModel.title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Description: ${ingredientModel.title}"),
+            SizedBox(height: 4),
+            Text("Quantity: ${ingredientModel.quantity}"),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Okay'),
+          ),
+        ],
+      );
+    },
+  );
 }
