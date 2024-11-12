@@ -1,17 +1,20 @@
 
 
+import 'package:alimency_cook_book/src/grok_api_service.dart';
 import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/repositories/ingredient_repository.dart';
 import 'package:flutter/material.dart';
 
 class PantryViewModel with ChangeNotifier {
-  
+
+  final GrokApiService _grokApiService = GrokApiService();
   final IngredientRepository _ingredientRepository;
 
   PantryViewModel(this._ingredientRepository);
 
   List<IngredientModel>? _ingredients = [];
   IngredientModel? _selectedIngredient;
+  List<String> generatedRecipes = [];
 
   List<IngredientModel> get ingredients => _ingredients!;
   IngredientModel? get selectedNote => _selectedIngredient;
@@ -40,5 +43,15 @@ class PantryViewModel with ChangeNotifier {
     await Future.delayed(Duration.zero);
     _ingredients?.removeWhere((item) => item.id == id);
     notifyListeners();
+  }
+
+  Future<void> generateRecipesFromPantry() async {
+    print("Loading Recipes");
+    try {
+      generatedRecipes = await _grokApiService.generateRecipes(ingredients);
+      notifyListeners();
+    } catch (e) {
+      print("Error generating recipes: $e");
+    }
   }
 }

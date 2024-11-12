@@ -24,7 +24,7 @@ class IngredientModel {
     return IngredientModel(
       id: json['id'], 
       title: json['title'], 
-      quantity: json['content']
+      quantity: json['quantity']
       );
   }
    

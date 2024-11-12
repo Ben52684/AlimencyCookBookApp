@@ -15,7 +15,7 @@ Features :
       > Add Meal
       > Filter by
       > Stats Bar
-    - Favourite Meals [In Progress]
+    - Favourite Meals [Backlog]
       > List of Favourite meals
       > Filter by
     - Popular Food Guides uploaded by community [Backlog]
@@ -24,5 +24,5 @@ Features :
         > Add guide
         > Remove guide
       > Upvote guides
-    - Food Guides generated based on ingredients in Virtual Pantry using Grok [Backlog] 
+    - Food Guides generated based on ingredients in Virtual Pantry using Grok [In Progress] 
       > Integrate Grok API

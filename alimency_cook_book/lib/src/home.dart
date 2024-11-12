@@ -25,72 +25,77 @@ class Home extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //Favourite Food Guides
+                    // Favourite Food Guides
                     Container(
                         child: Card(
                             child: SizedBox(
                       height: 200,
                       width: 200,
                       child: FloatingActionButton(
-                          child: Icon(Icons.favorite), onPressed: () {}),
+                          child: const Icon(Icons.favorite), onPressed: () {}),
                     ))),
-                    //Food Guide Forum
+                    // Food Guide Forum
                     Container(
                         child: Card(
                             child: SizedBox(
                       height: 200,
                       width: 200,
                       child: FloatingActionButton(
-                          child: Icon(Icons.library_books), onPressed: () {}),
+                          child: const Icon(Icons.library_books),
+                          onPressed: () {}),
                     )))
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //Meal Tracker and Expense Tracker
+                    // Meal Tracker and Expense Tracker
                     Container(
                         child: Card(
                             child: SizedBox(
                       height: 200,
                       width: 200,
                       child: FloatingActionButton(
-                          child: Icon(Icons.history), onPressed: () {}),
+                          child: const Icon(Icons.history), onPressed: () {}),
                     ))),
-                    //Users Pantry/Fridge
-                    Container(
-                        child: Card(
-                            child: SizedBox(
+                    // Users Pantry/Fridge
+                    Card(
+                        child: SizedBox(
                       height: 200,
                       width: 200,
                       child: FloatingActionButton(
-                          child: Icon(Icons.food_bank),
+                          child: const Icon(Icons.food_bank),
                           onPressed: () {
                             Navigator.pushNamed(context, "/user_pantry");
                           }),
-                    )))
+                    ))
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: FloatingActionButton(
-                          child: Icon(Icons.circle),
-                          onPressed: () {},
-                          shape: CircleBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                const SizedBox(height: 20),
+                // Generate Recipes Button
+                // FloatingActionButton(
+                //   onPressed: () async {
+                //     await pantryViewModel.generateRecipesFromPantry();
+                //   },
+                //   shape: const CircleBorder(),
+                //   child: const Icon(Icons.circle),
+                // ),
+                // const SizedBox(height: 20),
+                // if (pantryViewModel.generatedRecipes.isNotEmpty)
+                //   Expanded(
+                //     child: ListView.builder(
+                //       itemCount: pantryViewModel.generatedRecipes.length,
+                //       itemBuilder: (context, index) {
+                //         return ListTile(
+                //           title: Text(pantryViewModel.generatedRecipes[index]),
+                //         );
+                //       },
+                //     ),
+                //   ),
               ],
             ),
           );
-        }));
+        })
+      );
   }
 }
