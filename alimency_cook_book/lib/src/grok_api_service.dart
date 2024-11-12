@@ -6,17 +6,15 @@ import 'package:http/http.dart' as http;
 
 class GrokApiService {
   ApiKeyProvider apiKeyProvider = ApiKeyProvider();
-  final String baseUrl = 'https://api.x.ai/v1/chat/completions'; // Base URL for Grok API
+  final String baseUrl = 'https://api.x.ai/v1/chat/completions';
   
   Future<List<String>> generateRecipes(List<IngredientModel> ingredients) async {
 
     final ingredientNames = ingredients.map((ingredient) => ingredient.title).toList();
 
     try {
-      // Fetch the API key
       Future<String> key = ApiKeyProvider.loadApiKey();
 
-      // Prepare the message for the API, using the ingredients in the user request
       final requestBody = jsonEncode({
         "messages": [
           {
@@ -33,7 +31,6 @@ class GrokApiService {
         "temperature": 0, // Set a low temperature for more deterministic output
       });
 
-      // Send POST request to the Grok API
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {
@@ -43,10 +40,9 @@ class GrokApiService {
         body: requestBody,
       );
 
-      // Handle the response from the API
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = jsonDecode(response.body);
-        // Assuming the response contains a list of recipes or related content
+
         final List<String> recipes = responseBody['choices']
             .map<String>((choice) => choice['message']['content'].toString())
             .toList();
