@@ -73,25 +73,25 @@ class Home extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 // Generate Recipes Button
-                // FloatingActionButton(
-                //   onPressed: () async {
-                //     await pantryViewModel.generateRecipesFromPantry();
-                //   },
-                //   shape: const CircleBorder(),
-                //   child: const Icon(Icons.circle),
-                // ),
-                // const SizedBox(height: 20),
-                // if (pantryViewModel.generatedRecipes.isNotEmpty)
-                //   Expanded(
-                //     child: ListView.builder(
-                //       itemCount: pantryViewModel.generatedRecipes.length,
-                //       itemBuilder: (context, index) {
-                //         return ListTile(
-                //           title: Text(pantryViewModel.generatedRecipes[index]),
-                //         );
-                //       },
-                //     ),
-                //   ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    await pantryViewModel.generateRecipesFromPantry();
+                  },
+                  shape: const CircleBorder(),
+                  child: const Icon(Icons.circle),
+                ),
+                const SizedBox(height: 20),
+                if (pantryViewModel.generatedRecipes.isNotEmpty)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: pantryViewModel.generatedRecipes.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(pantryViewModel.generatedRecipes[index]),
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
           );

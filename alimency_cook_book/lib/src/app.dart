@@ -1,6 +1,5 @@
 import 'package:alimency_cook_book/src/home.dart';
 import 'package:alimency_cook_book/src/repositories/dummy_ingredient_repo.dart';
-import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/user_pantry/new_ingredient_view.dart';
 import 'package:alimency_cook_book/src/user_pantry/user_pantry_view.dart';
 import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -56,9 +54,9 @@ class MyApp extends StatelessWidget {
                     case SampleItemDetailsView.routeName:
                       return const SampleItemDetailsView();
                     case UserPantry.routeName:
-                      return UserPantry();
+                      return const UserPantry();
                     case NewIngredientView.routeName:
-                      return NewIngredientView();
+                      return const NewIngredientView();
                     default:
                       return Home();
                   }

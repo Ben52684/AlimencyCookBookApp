@@ -9,10 +9,10 @@ class UserPantry extends StatefulWidget {
   const UserPantry({super.key});
 
   @override
-  _UserPantryState createState() => _UserPantryState();
+  UserPantryState createState() => UserPantryState();
 }
 
-class _UserPantryState extends State<UserPantry> {
+class UserPantryState extends State<UserPantry> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
 

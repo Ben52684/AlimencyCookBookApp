@@ -1,23 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:alimency_cook_book/src/api_key_provider.dart';
 import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:http/http.dart' as http;
 
 class GrokApiService {
+  ApiKeyProvider apiKeyProvider = ApiKeyProvider();
   final String baseUrl = 'https://api.x.ai/v1/chat/completions'; // Base URL for Grok API
   
-  // Future to load the API key from a file
-  final Future<String> apiKey = ApiKeyProvider.loadApiKey(); 
-
-  // Function to generate recipes using ingredients and sending them to Grok API
   Future<List<String>> generateRecipes(List<IngredientModel> ingredients) async {
-    // Map the list of ingredients to a list of ingredient titles
+
     final ingredientNames = ingredients.map((ingredient) => ingredient.title).toList();
 
     try {
       // Fetch the API key
-      final key = 'xai-iIjCVZwRufAsKQBb0El9lY5iCsf5XT082ZSOmYuTH7CW8vz7xNoT0oMEjciniimApz9IWxfvCI9R6Ar2'
-;
+      Future<String> key = ApiKeyProvider.loadApiKey();
 
       // Prepare the message for the API, using the ingredients in the user request
       final requestBody = jsonEncode({
@@ -63,3 +60,12 @@ class GrokApiService {
     }
   }
 }
+
+Future<String> loadApiKey() async {
+    try {
+      final file = File('/home/benjamin/Documents/grok_api_key.txt'); // Use the correct path
+      return await file.readAsString();
+    } catch (e) {
+      throw Exception("Error reading API key: $e");
+    }
+  }
