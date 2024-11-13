@@ -1,19 +1,23 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:alimency_cook_book/src/api_key_provider.dart';
 import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:http/http.dart' as http;
 
+
 class GrokApiService {
-  ApiKeyProvider apiKeyProvider = ApiKeyProvider();
+  
   final String baseUrl = 'https://api.x.ai/v1/chat/completions';
   
   Future<List<String>> generateRecipes(List<IngredientModel> ingredients) async {
 
-    final ingredientNames = ingredients.map((ingredient) => ingredient.title).toList();
+    final ingredientMap = {for (var ingredient in ingredients) ingredient.title: ingredient.quantity};
+    var content = "Can you generate your top 3 most popular recipes, these are my ingredients that I have available and their quantities, try not to be too experimental with recipes.";
+      ingredientMap.forEach((key, value) {
+        content += "$key: $value, ";
+      });
 
     try {
-      Future<String> key = ApiKeyProvider.loadApiKey();
+      final apiKey = const String.fromEnvironment('API_KEY');
+
 
       final requestBody = jsonEncode({
         "messages": [
@@ -23,7 +27,7 @@ class GrokApiService {
           },
           {
             "role": "user",
-            "content": "Can you generate recipes with the following ingredients: ${ingredientNames.join(', ')}?"
+            "content": "${content}"
           }
         ],
         "model": "grok-beta", // Model identifier
@@ -35,7 +39,7 @@ class GrokApiService {
         Uri.parse(baseUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $key',
+          'Authorization': 'Bearer $apiKey',
         },
         body: requestBody,
       );
@@ -51,17 +55,7 @@ class GrokApiService {
         throw Exception("Failed to generate recipes: ${response.reasonPhrase}");
       }
     } catch (e) {
-      // Catch errors and rethrow them for further handling
       throw Exception("Error generating recipes: $e");
     }
   }
 }
-
-Future<String> loadApiKey() async {
-    try {
-      final file = File('/home/benjamin/Documents/grok_api_key.txt'); // Use the correct path
-      return await file.readAsString();
-    } catch (e) {
-      throw Exception("Error reading API key: $e");
-    }
-  }

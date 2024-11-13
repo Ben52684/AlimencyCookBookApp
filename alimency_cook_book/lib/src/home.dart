@@ -11,9 +11,9 @@ class Home extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 197, 223, 50),
         appBar: AppBar(
           title: const Text("Alimency"),
-          backgroundColor: const Color.fromARGB(255, 24, 24, 24),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           centerTitle: true,
-          titleTextStyle: const TextStyle(color: Colors.white),
+          titleTextStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         ),
         body: Consumer<PantryViewModel>(
             builder: (context, pantryViewModel, child) {
