@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:alimency_cook_book/src/grok_api_service.dart';
 import 'package:alimency_cook_book/src/view_models/ingredient_model.dart';
 import 'package:alimency_cook_book/src/repositories/ingredient_repository.dart';
+import 'package:alimency_cook_book/src/view_models/recipe_model.dart';
 import 'package:flutter/material.dart';
 
 class PantryViewModel with ChangeNotifier {
@@ -13,16 +13,19 @@ class PantryViewModel with ChangeNotifier {
 
   List<IngredientModel>? _ingredients = [];
   IngredientModel? _selectedIngredient;
-  List<String> generatedRecipes = [];
+  List<String> grokGeneratedRecipes = [];
+  List<RecipeModel>? finalGeneratedRecipes;
 
   List<IngredientModel> get ingredients => _ingredients!;
-  IngredientModel? get selectedNote => _selectedIngredient;
+  IngredientModel? get selectedIngredient => _selectedIngredient;
 
+  // Load ingredients from the repository
   Future<void> loadIngredients() async {
     await Future.delayed(Duration.zero);
     notifyListeners();
   }
 
+  // Add a new ingredient
   Future<void> addIngredient(IngredientModel ingredient) async {
     await Future.delayed(Duration.zero);
     _ingredients?.add(ingredient);
@@ -30,6 +33,7 @@ class PantryViewModel with ChangeNotifier {
     print(ingredient.title);
   }
 
+  // Update an existing ingredient
   Future<void> updateIngredient(IngredientModel ingredient) async {
     await Future.delayed(Duration.zero);
     _ingredients?.removeWhere((item) => item.id == ingredient.id);
@@ -37,72 +41,80 @@ class PantryViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // Delete an ingredient by ID
   Future<void> deleteIngredient(int id) async {
     await Future.delayed(Duration.zero);
     _ingredients?.removeWhere((item) => item.id == id);
     notifyListeners();
   }
 
+  // Generate recipes based on the current pantry items
   Future<void> generateRecipesFromPantry() async {
     print("Loading Recipes");
     try {
-      generatedRecipes = await _grokApiService.generateRecipes(ingredients);
-      print(generatedRecipes);
-      recipesToJson(generatedRecipes);
+      grokGeneratedRecipes = await _grokApiService.generateRecipes(ingredients);
+      recipesToJson(grokGeneratedRecipes);
       notifyListeners();
     } catch (e) {
       print("Error generating recipes: $e");
     }
   }
 
-  void recipesToJson(List<String> generatedRecipes) {
-    // Combine all parts of the list into one large string
-    String allRecipes = generatedRecipes.join("\n");
+  // Convert recipes to JSON format
+  void recipesToJson(List<String> grokGeneratedRecipes) {
+    // Combine all recipes into one large string
+    String allRecipes = grokGeneratedRecipes.join("\n");
 
-    // Split the long string into individual recipes by looking for '###' followed by a number and a dot
-    List<String> recipes = allRecipes.split(RegExp(r'### \d+\.\s*'));
+    // Split the recipes using '---' as a delimiter
+    List<String> recipes =
+        allRecipes.split(RegExp(r'---+')).map((e) => e.trim()).toList();
 
-    if (recipes.isNotEmpty) recipes.removeAt(0);
+    // Parse each recipe into a RecipeModel and store it
+    finalGeneratedRecipes = recipes
+        .where((recipe) => recipe.isNotEmpty) // Exclude empty entries
+        .map((recipe) => _parseRecipeToModel(recipe)) // Convert to RecipeModel
+        .where((recipe) => recipe != null) // Exclude null values
+        .cast<RecipeModel>()
+        .toList();
 
-    // List to hold the parsed recipes
-    List<Map<String, String>> recipeData = [];
+    // Convert RecipeModel list to JSON
+    String jsonRecipes = jsonEncode(
+      finalGeneratedRecipes!.map((recipe) => recipe.toJson()).toList(),
+    );
 
-    // Process each recipe
-    for (var recipe in recipes) {
-      Map<String, String> parsedRecipe = _parseRecipe(recipe);
-      recipeData.add(parsedRecipe);
-    }
-
-    // Convert the list of recipes into JSON
-    String jsonRecipes = jsonEncode(recipeData);
-    print(jsonRecipes);
+    // Debugging: Print the JSON representation
+    print(finalGeneratedRecipes);
   }
 
-// Function to parse each recipe into a map with title, ingredients, and instructions
-  Map<String, String> _parseRecipe(String recipe) {
-    
-    print(recipe);
-    // Regular expressions to extract title, ingredients, and instructions
-    final titleRegex = RegExp(r'^\s*(.*?)\s*\n\*\*Ingredients\:\*\*', multiLine: true);
-    final ingredientsRegex = RegExp(r'\*\*Ingredients\:\*\*\n([\s\S]+?)\n\*\*Instructions\:\*\*');
-    final instructionsRegex = RegExp(r'\*\*Instructions\:\*\*\n([\s\S]+)$');
+  // Parse a single recipe string into a RecipeModel
+  RecipeModel? _parseRecipeToModel(String recipe) {
+    final titleRegex = RegExp(r'\*\*Title\*\*:\s*(.+)', multiLine: true);
+    final ingredientsRegex =
+        RegExp(r'\*\*Ingredients\*\*:\s*([\s\S]+?)\n\s*\*\*Instructions\*\*');
+    final instructionsRegex =
+        RegExp(r'\*\*Instructions\*\*:\s*([\s\S]+)');
 
-
-    // Extract the title, ingredients, and instructions
     String title = _extractFirstMatch(recipe, titleRegex);
     String ingredients = _extractFirstMatch(recipe, ingredientsRegex);
     String instructions = _extractFirstMatch(recipe, instructionsRegex);
 
-    return {
-      'title': title,
-      'ingredients': ingredients,
-      'instructions': instructions,
-    };
+    if (title.isEmpty || ingredients.isEmpty || instructions.isEmpty) {
+      print("Failed to parse recipe: $recipe");
+      return null; // Skip invalid recipes
+    }
+
+    return RecipeModel(
+      title: title,
+      ingredients: ingredients,
+      instructions: instructions,
+    );
   }
 
-// Helper function to extract the first match of the regex from the recipe text
+  // Extract the first match from a string using a regex
   String _extractFirstMatch(String recipe, RegExp regex) {
     final match = regex.firstMatch(recipe);
-    return match != null ? match.group(1) ?? '' : '';
+    return match != null && match.group(1) != null
+        ? match.group(1)!.trim()
+        : '';
   }
 }

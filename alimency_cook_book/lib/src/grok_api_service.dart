@@ -10,7 +10,7 @@ class GrokApiService {
   Future<List<String>> generateRecipes(List<IngredientModel> ingredients) async {
 
     final ingredientMap = {for (var ingredient in ingredients) ingredient.title: ingredient.quantity};
-    var content = "Can you generate your top 3 most popular recipes, these are my ingredients that I have available and their quantities, try not to be too experimental with recipes.";
+    var content = "Can you generate your top 3 most popular recipes, these are my ingredients that I have available and their quantities, try not to be too experimental with recipes. Can you also make sure that the format you return them in is as follows Title : xyz, Ingredients: xyz, Instructions: xyz, with no intro or closing statement";
       ingredientMap.forEach((key, value) {
         content += "$key: $value, ";
       });
@@ -30,9 +30,9 @@ class GrokApiService {
             "content": "${content}"
           }
         ],
-        "model": "grok-beta", // Model identifier
-        "stream": false, // Whether to stream responses or not
-        "temperature": 0, // Set a low temperature for more deterministic output
+        "model": "grok-beta", 
+        "stream": false, 
+        "temperature": 0, 
       });
 
       final response = await http.post(

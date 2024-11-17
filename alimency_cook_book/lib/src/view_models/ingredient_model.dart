@@ -1,8 +1,8 @@
 
 class IngredientModel {
-  late final int id;
-  late final String title;
-  late final String quantity;
+  final int id;
+  final String title;
+  final String quantity;
 
   IngredientModel({
     required this.id,

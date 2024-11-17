@@ -1,3 +1,4 @@
+import 'package:alimency_cook_book/src/generated_recipes_view.dart';
 import 'package:alimency_cook_book/src/view_models/pantry_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -76,26 +77,21 @@ class Home extends StatelessWidget {
                 FloatingActionButton(
                   onPressed: () async {
                     await pantryViewModel.generateRecipesFromPantry();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GeneratedRecipesView(
+                          recipes: pantryViewModel.finalGeneratedRecipes,
+                        ),
+                      ),
+                    );
                   },
                   shape: const CircleBorder(),
                   child: const Icon(Icons.circle),
                 ),
-                const SizedBox(height: 20),
-                if (pantryViewModel.generatedRecipes.isNotEmpty)
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: pantryViewModel.generatedRecipes.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(pantryViewModel.generatedRecipes[index]),
-                        );
-                      },
-                    ),
-                  ),
               ],
             ),
           );
-        })
-      );
+        }));
   }
 }
